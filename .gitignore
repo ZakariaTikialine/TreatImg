@@ -1,0 +1,29 @@
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# Images (optional - remove if you want to track images)
+# *.png
+# *.jpg
+# *.jpeg
+
+# Output files
+flower_copy.png
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
