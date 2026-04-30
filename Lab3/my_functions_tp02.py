@@ -5,20 +5,24 @@ def get_gaussian_filtre(dimension=3,sigma=0.5):
     """return the result after apply a gaussian filtre with a given dimension """
     kernel = tools.gaussian_mask(size=dimension,sigma=sigma)
     return kernel
-def plot_img(img,title):
+def plot_img(img,title, cmap=None):
     fig,ax = plt.subplots()
-    ax.imshow(img)
+    if cmap is None and len(img.shape) == 2:
+        cmap = 'gray'
+    ax.imshow(img, cmap=cmap)
     ax.set_title(title)
 
-def filter_analysis(img,kernel):
+def filter_analysis(img,kernel, cmap=None):
     """apply filtre on imageand compare between original and filtred image"""
+    if cmap is None and len(img.shape) == 2:
+        cmap = 'gray'
     filtred_im =apply_filter_to_single_channel(img,kernel)
     fig,ax = plt.subplots(1,2)
 #     ploting original img
-    ax[0].imshow(img)
+    ax[0].imshow(img, cmap=cmap)
     ax[0].set_title("original")
 #     ploting filtred img
-    ax[1].imshow(filtred_im)
+    ax[1].imshow(filtred_im, cmap=cmap)
     ax[1].set_title('filtred image')
 def apply_filter_to_single_channel(img,kernel):
     dimK = kernel.shape
@@ -47,7 +51,7 @@ def get_Gy(img):
     return apply_filter_to_single_channel(img,Sy)
 # filtre laplace
 def get_L(img):
-    L = np.array([[0,1,0],[-1,4,-1],[0,1,0]])
+    L = np.array([[0,1,0],[1,-4,1],[0,1,0]])
     return apply_filter_to_single_channel(img,L)
 def module_grad(img):
     Gx = get_Gx(img)
@@ -57,5 +61,6 @@ def module_grad(img):
 def direct_grad(img):
     Gx = get_Gx(img)
     Gy = get_Gy(img)
-    result=np.arctan(Gy/Gx)
+    # np.arctan2 automatically handles division by zero perfectly!
+    result=np.arctan2(Gy, Gx)
     return result
